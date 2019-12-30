@@ -18,7 +18,7 @@ public class TestVolatile {
                 break;
             }else{
                 //如果else里面进行操作，则降低了while(true)的效率，让main线程有机会去主存获取数据
-                System.out.println("+++");
+                //System.out.println("+++");
             }
         }
     }
