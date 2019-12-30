@@ -1,5 +1,8 @@
 package com.atguigu.juc;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 /*
 * 一、用于解决多线程安全问题的方法：
 *
@@ -25,15 +28,26 @@ class Ticket implements Runnable {
 
     private int tick = 100;
 
+    private Lock lock = new ReentrantLock();
+
     @Override
     public void run() {
-        while (tick > 0) {
-            try {
-                Thread.sleep(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+        //上锁
+        lock.lock();
+
+        try {
+            while (tick > 0) {
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(Thread.currentThread().getName() + "完成售票，余票为：" + --tick);
             }
-            System.out.println(Thread.currentThread().getName() + "完成售票，余票为：" + --tick);
+        }finally {
+            //释放锁
+            lock.unlock();
         }
     }
 }
