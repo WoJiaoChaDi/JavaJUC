@@ -18,8 +18,18 @@ class Clerk {
     public synchronized void get(){
         if (product >= 10) {
             System.out.println("产品已满！");
+
+            //线程等待
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             System.out.println(Thread.currentThread().getName() + ":" + ++product);
+
+            //通知唤醒
+            this.notifyAll();
         }
     }
 
@@ -27,8 +37,18 @@ class Clerk {
     public synchronized void sale(){
         if (product <= 0) {
             System.out.println("缺货！");
+
+            //线程等待
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         } else {
             System.out.println(Thread.currentThread().getName() + ":" + --product);
+
+            //通知唤醒
+            this.notifyAll();
         }
     }
 }
