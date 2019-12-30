@@ -16,7 +16,7 @@ class Clerk {
 
     //进货
     public synchronized void get(){
-        if (product >= 10) {
+        if (product >= 1) {
             System.out.println("产品已满！");
 
             //线程等待
@@ -25,12 +25,10 @@ class Clerk {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } else {
-            System.out.println(Thread.currentThread().getName() + ":" + ++product);
-
-            //通知唤醒
-            this.notifyAll();
         }
+        System.out.println(Thread.currentThread().getName() + ":" + ++product);
+        //通知唤醒
+        this.notifyAll();
     }
 
     //卖货
@@ -44,12 +42,10 @@ class Clerk {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } else {
-            System.out.println(Thread.currentThread().getName() + ":" + --product);
-
-            //通知唤醒
-            this.notifyAll();
         }
+        System.out.println(Thread.currentThread().getName() + ":" + --product);
+        //通知唤醒
+        this.notifyAll();
     }
 }
 
@@ -64,6 +60,14 @@ class Productor implements Runnable {
     @Override
     public void run() {
         for (int i = 0; i < 20; i++) {
+
+            //生产者添加延迟
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             clerk.get();
         }
     }
