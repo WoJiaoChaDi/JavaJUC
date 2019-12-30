@@ -25,6 +25,7 @@ public class TestAtomicDemo {
 class AtomicDemo implements Runnable{
 
     //对于原子性问题,volatile也无能为力
+    //因为线程里面对serialNumber有读-写操作，在一个线程写之前，另一个线程读取了旧数据，则两个线程写的时候会互相覆盖，导致无法保持原子性，及时他们都在主存中操作，也会有先后写覆盖的问题
     //private volatile int serialNumber = 0;
     private int serialNumber = 0;
 
