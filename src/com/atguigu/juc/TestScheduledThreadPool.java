@@ -30,7 +30,7 @@ public class TestScheduledThreadPool {
                     int num = new Random().nextInt(100);
                     System.out.println(Thread.currentThread().getName() + " : " + num);
                     return num;
-            }, 2, TimeUnit.SECONDS);
+            }, 2, TimeUnit.SECONDS);//定义延迟时间和延迟单位
 
             System.out.println(future.get());
         }
