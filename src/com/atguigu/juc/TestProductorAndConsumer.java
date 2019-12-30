@@ -9,8 +9,8 @@ public class TestProductorAndConsumer {
         new Thread(productor, "生产者A").start();
         new Thread(consumer, "消费者B").start();
 
-        //new Thread(productor, "生产者AA").start();
-        //new Thread(consumer, "消费者BB").start();
+        new Thread(productor, "生产者AA").start();
+        new Thread(consumer, "消费者BB").start();
     }
 }
 
@@ -19,7 +19,7 @@ class Clerk {
 
     //进货
     public synchronized void get(){
-        if (product >= 1) {
+        while (product >= 1) {
             System.out.println("产品已满！");
 
             //线程等待
@@ -36,7 +36,7 @@ class Clerk {
 
     //卖货
     public synchronized void sale(){
-        if (product <= 0) {
+        while (product <= 0) {
             System.out.println("缺货！");
 
             //线程等待
