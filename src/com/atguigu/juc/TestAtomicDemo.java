@@ -24,6 +24,8 @@ public class TestAtomicDemo {
 
 class AtomicDemo implements Runnable{
 
+    //对于原子性问题,volatile也无能为力
+    //private volatile int serialNumber = 0;
     private int serialNumber = 0;
 
     @Override
