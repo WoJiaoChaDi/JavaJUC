@@ -9,8 +9,8 @@ public class TestProductorAndConsumer {
         new Thread(productor, "生产者A").start();
         new Thread(consumer, "消费者B").start();
 
-        new Thread(productor, "生产者AA").start();
-        new Thread(consumer, "消费者BB").start();
+        //new Thread(productor, "生产者AA").start();
+        //new Thread(consumer, "消费者BB").start();
     }
 }
 
