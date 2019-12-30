@@ -19,7 +19,7 @@ class Clerk {
 
     //进货
     public synchronized void get(){
-        while (product >= 1) {
+        while (product >= 1) {//为了避免虚假唤醒问题，wait()应该总是使用在循环中才行
             System.out.println("产品已满！");
 
             //线程等待
