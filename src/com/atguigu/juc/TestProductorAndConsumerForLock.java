@@ -1,5 +1,9 @@
 package com.atguigu.juc;
 
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class TestProductorAndConsumerForLock {
     public static void main(String[] args) {
         Clerk clerk = new Clerk();
@@ -16,39 +20,57 @@ public class TestProductorAndConsumerForLock {
 
 class Clerk {
     private int product = 0;
+    private Lock lock = new ReentrantLock();
+    private Condition condition = lock.newCondition();
 
     //进货
-    public synchronized void get(){
-        while (product >= 1) {//为了避免虚假唤醒问题，wait()应该总是使用在循环中才行
-            System.out.println("产品已满！");
+    public void get(){
+        lock.lock();
 
-            //线程等待
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        try {
+            while (product >= 1) {//为了避免虚假唤醒问题，wait()应该总是使用在循环中才行
+                System.out.println("产品已满！");
+
+                //线程等待
+                try {
+                    //this.wait();
+                    condition.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+            System.out.println(Thread.currentThread().getName() + ":" + ++product);
+            //通知唤醒
+            //this.notifyAll();
+            condition.signalAll();
+        } finally {
+            lock.unlock();
         }
-        System.out.println(Thread.currentThread().getName() + ":" + ++product);
-        //通知唤醒
-        this.notifyAll();
     }
 
     //卖货
-    public synchronized void sale(){
-        while (product <= 0) {
-            System.out.println("缺货！");
+    public void sale(){
+        lock.lock();
 
-            //线程等待
-            try {
-                this.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        try {
+            while (product <= 0) {
+                System.out.println("缺货！");
+
+                //线程等待
+                try {
+                    //this.wait();
+                    condition.await();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+            System.out.println(Thread.currentThread().getName() + ":" + --product);
+            //通知唤醒
+            //this.notifyAll();
+            condition.signalAll();
+        } finally {
+            lock.unlock();
         }
-        System.out.println(Thread.currentThread().getName() + ":" + --product);
-        //通知唤醒
-        this.notifyAll();
     }
 }
 
