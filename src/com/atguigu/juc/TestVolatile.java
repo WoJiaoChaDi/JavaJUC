@@ -31,6 +31,11 @@ public class TestVolatile {
 class ThreadDemo implements Runnable{
 
     //共享变量用volaile修饰，就相当于直接在操作主存内的数据了
+    //              相较于 synchronized 是一种较为轻量级的同步策略
+
+    //区别：
+    //  1.volatile不具备互斥性
+    //  2.不能保证变量的“原子性”
     private volatile boolean flag = false;
 
     @Override
