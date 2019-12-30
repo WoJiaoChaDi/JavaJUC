@@ -1,7 +1,12 @@
 package com.atguigu.juc;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /*
  * 一、线程池：提供了一个线程队列，队列中保存这所有等待状态的线程。避免了创建与销毁的额外开销，提高了响应速度。
@@ -21,19 +26,36 @@ import java.util.concurrent.Executors;
  *
  * */
 public class TestThreadPool {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         //1. 创建线程池
         ExecutorService pool = Executors.newFixedThreadPool(5);
         ThreadPoolDemo tpd = new ThreadPoolDemo();
 
-        //2. 为线程池中的线程分配任务
+        //2. 为线程池中的线程分配任务(Runnable)
+        //for (int i = 0; i < 10; i++) {
+        //    pool.submit(tpd);
+        //}
+
+        //2. 为线程池中的线程分配任务(Callable)
+        List<Integer> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            pool.submit(tpd);
+            Future<Integer> future = pool.submit(() -> {
+                int sum = 0;
+                for (int j = 0; j < 100; j++) {
+                    sum += j;
+                }
+                return sum;
+            });
+            list.add(future.get());
         }
+
+        System.out.println(list);
 
         //3. 关闭线程池
         pool.shutdown();//平和的方式关闭：等待现有的任务关闭
-        pool.shutdownNow();//立刻关闭，不管任务是否完成
+        //pool.shutdownNow();//立刻关闭，不管任务是否完成
+
+
     }
 }
 
