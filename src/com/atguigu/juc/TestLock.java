@@ -33,21 +33,29 @@ class Ticket implements Runnable {
     @Override
     public void run() {
 
-        //上锁
-        lock.lock();
+        while (tick > 0) {
 
-        try {
-            while (tick > 0) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println(Thread.currentThread().getName() + "完成售票，余票为：" + --tick);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        }finally {
-            //释放锁
-            lock.unlock();
+            //上锁
+            lock.lock();
+
+            try {
+                if (tick > 0) {
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println(Thread.currentThread().getName() + "完成售票，余票为：" + --tick);
+                }
+            }finally {
+                //释放锁
+                lock.unlock();
+            }
         }
     }
 }
