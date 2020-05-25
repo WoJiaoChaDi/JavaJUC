@@ -22,6 +22,8 @@ public class TestForkJoinPool {
         System.out.println(sum);
 
         Instant end = Instant.now();
+
+        //消耗时间为：2914
         System.out.println("消耗时间为：" + Duration.between(start, end).toMillis());
     }
 
@@ -37,6 +39,8 @@ public class TestForkJoinPool {
         System.out.println(sum);
 
         Instant end = Instant.now();
+
+        //消耗时间为：5264
         System.out.println("消耗时间为：" + Duration.between(start, end).toMillis());
     }
 
@@ -51,11 +55,13 @@ public class TestForkJoinPool {
         System.out.println(sum);
 
         Instant end = Instant.now();
+
+        //消耗时间为：2264
         System.out.println("消耗时间为：" + Duration.between(start, end).toMillis());
     }
 }
 
-//RecursiveTash<T> 和 RecursiveActive  区别就是有没有返回值
+//RecursiveTask<T> 和 RecursiveActive  区别就是有没有返回值
 class ForkJoinSumCalculate extends RecursiveTask<Long> {
 
     private long start;
