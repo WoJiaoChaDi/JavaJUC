@@ -4,6 +4,8 @@ import org.junit.Test;
 
 public class TestThread_Synchronized{
 
+    private static final int ACT = Thread.activeCount();
+
     //***
     //***
     //***同步代码块，只影响使用同一个对象(this = 调用该方法的对象）的线程 的同步代码块 内容的资源争抢
@@ -112,8 +114,9 @@ public class TestThread_Synchronized{
         new Thread( () -> number.getTwo()).start();
         new Thread( () -> number.getTwo()).start();
 
-        //此处等待是因为junit执行完会杀掉所有线程，此处多等待一会儿是为了等所有线程执行完毕
-        Thread.sleep(30000);
+        //此处等待是因为junit执行完主线程后，不管子线程死活，直接杀掉所有
+        //等待所有线程结束
+        while (Thread.activeCount() > ACT) {}
         System.out.println("--------number");
     }
 
@@ -173,8 +176,9 @@ public class TestThread_Synchronized{
         Thread.sleep(1000);
         System.out.println("---四个线程都已开启---");
 
-        //此处等待是因为junit执行完会杀掉所有线程，此处多等待一会儿是为了等所有线程执行完毕
-        Thread.sleep(30000);
+        //此处等待是因为junit执行完主线程后，不管子线程死活，直接杀掉所有
+        //等待所有线程结束
+        while (Thread.activeCount() > ACT) {}
         System.out.println("--------number3456");
     }
 
@@ -287,8 +291,9 @@ public class TestThread_Synchronized{
         new Thread( () -> number_obj.getTwoLockObj(obj)).start();
         new Thread( () -> number_obj.getTwoLockObj(obj)).start();
 
-        //因为锁定的是this这个对象，所以同步代码块外的不受影响
-        Thread.sleep(30000);
+        //此处等待是因为junit执行完主线程后，不管子线程死活，直接杀掉所有
+        //等待所有线程结束
+        while (Thread.activeCount() > ACT) {}
         System.out.println("--------obj");
     }
 
@@ -346,8 +351,9 @@ public class TestThread_Synchronized{
         new Thread( () -> number_obj123.getTwoLockObj(obj3)).start();
         new Thread( () -> number_obj123.getTwoLockObj(obj4)).start();
 
-        //因为锁定的是this这个对象，所以同步代码块外的不受影响
-        Thread.sleep(30000);
+        //此处等待是因为junit执行完主线程后，不管子线程死活，直接杀掉所有
+        //等待所有线程结束
+        while (Thread.activeCount() > ACT) {}
         System.out.println("--------obj123");
     }
 
@@ -450,8 +456,9 @@ public class TestThread_Synchronized{
         new Thread( () -> number_class.getTwoLockClass()).start();
         new Thread( () -> number_class.getTwoLockClass()).start();
 
-        //因为锁定的是this这个对象，所以同步代码块外的不受影响
-        Thread.sleep(30000);
+        //此处等待是因为junit执行完主线程后，不管子线程死活，直接杀掉所有
+        //等待所有线程结束
+        while (Thread.activeCount() > ACT) {}
         System.out.println("--------class");
     }
 
@@ -460,18 +467,43 @@ public class TestThread_Synchronized{
         //因为锁定的是Number_10.class这个类，所以会影响同步代码块中的内容
         /*
         * 输出
-            Thread-3:one_0
-            Thread-3:锁住对象
-            Thread-4:one_0
-            Thread-5:one_0
-            Thread-3:释放对象
-            Thread-3:one_2
-            Thread-5:锁住对象
-            Thread-5:释放对象
-            Thread-5:one_2
-            Thread-4:锁住对象
-            Thread-4:释放对象
-            Thread-4:one_2
+            Thread-0:OneLockClass_进入方法
+            Thread-0:OneLockClass锁住对象
+            Thread-0:0
+            Thread-1:OneLockClass_进入方法
+            Thread-0:1
+            Thread-0:2
+            Thread-0:3
+            Thread-0:4
+            Thread-0:OneLockClass释放对象
+            Thread-0:OneLockClass_退出方法
+            Thread-3:static TwoLockClass_进入方法
+            Thread-3:static TwoLockClass锁住对象
+            Thread-3:0
+            Thread-3:1
+            Thread-3:2
+            Thread-3:3
+            Thread-3:4
+            Thread-3:static TwoLockClass释放对象
+            Thread-3:static TwoLockClass_退出方法
+            Thread-2:static TwoLockClass_进入方法
+            Thread-2:static TwoLockClass锁住对象
+            Thread-2:0
+            Thread-2:1
+            Thread-2:2
+            Thread-2:3
+            Thread-2:4
+            Thread-2:static TwoLockClass释放对象
+            Thread-2:static TwoLockClass_退出方法
+            Thread-1:OneLockClass锁住对象
+            Thread-1:0
+            Thread-1:1
+            Thread-1:2
+            Thread-1:3
+            Thread-1:4
+            Thread-1:OneLockClass释放对象
+            Thread-1:OneLockClass_退出方法
+            --------class678
         */
         TestThread_Synchronized number_class6 = new TestThread_Synchronized();
         TestThread_Synchronized number_class7 = new TestThread_Synchronized();
@@ -482,8 +514,9 @@ public class TestThread_Synchronized{
         new Thread( () -> number_class8.getTwoLockClass()).start();
         new Thread( () -> number_class9.getTwoLockClass()).start();
 
-        //因为锁定的是this这个对象，所以同步代码块外的不受影响
-        Thread.sleep(30000);
+        //此处等待是因为junit执行完主线程后，不管子线程死活，直接杀掉所有
+        //等待所有线程结束
+        while (Thread.activeCount() > ACT) {}
         System.out.println("--------class678");
     }
 
